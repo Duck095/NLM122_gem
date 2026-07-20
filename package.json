@@ -1,0 +1,22 @@
+{
+  "name": "mln122-realtime-complete",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run build -w @mln122/shared && concurrently -n SERVER,WEB -c cyan,magenta \"npm run dev -w @mln122/server\" \"npm run dev -w @mln122/web\"",
+    "build": "npm run build -w @mln122/shared && npm run build -w @mln122/web && npm run build -w @mln122/server",
+    "start": "npm run start -w @mln122/server",
+    "typecheck": "npm run build -w @mln122/shared && npm run typecheck -w @mln122/server && npm run typecheck -w @mln122/web",
+    "test:smoke": "npm run build && npm run test:smoke -w @mln122/server"
+  },
+  "devDependencies": {
+    "concurrently": "10.0.3"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}
