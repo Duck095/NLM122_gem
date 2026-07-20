@@ -4,6 +4,7 @@ import type { RoomPublicState, TacticalCard, TeamPublic } from "@mln122/shared";
 import { Badge, Button, Card, EmptyState, PageShell, SectionTitle, TopBar } from "../components/Ui";
 import {
   ConnectionBadge,
+  EventResolutionSummary,
   IndicatorGrid,
   ProjectEffects,
   QuestionPanel,
@@ -110,6 +111,7 @@ function PlayerQuiz({ room, team, act }: { room: RoomPublicState; team: TeamPubl
   const isEliminated = room.quiz.eliminatedTeamIds.includes(team.id);
   const hasRight = room.quiz.answeringTeamId === team.id && ["answering", "mandatory"].includes(room.quiz.status);
   const canOpenBox = room.quiz.status === "blindbox" && room.quiz.pendingBlindBoxTeamId === team.id;
+  const isWaitingForBlindBox = room.quiz.status === "blindbox" && !canOpenBox;
 
   return (
     <>
@@ -131,6 +133,8 @@ function PlayerQuiz({ room, team, act }: { room: RoomPublicState; team: TeamPubl
             : <div className="buzz-inline"><p>Lượt {room.quiz.buzzRound}: tập đoàn nhanh nhất sẽ được xem đáp án.</p><button type="button" className="buzz-button" onClick={() => act("player:quiz-buzz")}>GIÀNH QUYỀN TRẢ LỜI</button></div>
         ) : room.quiz.status === "preview" ? (
           <EmptyState title="Hãy thảo luận câu hỏi" text="Đáp án và nút giành quyền sẽ xuất hiện khi giảng viên mở lượt." />
+        ) : isWaitingForBlindBox ? (
+          <EmptyState title="Đang chờ câu tiếp theo" text="Tập đoàn trả lời đúng đang nhận phần thưởng." />
         ) : null}
       </QuestionPanel>
       {canOpenBox ? <BlindBoxGrid room={room} team={team} act={act} /> : null}
@@ -165,6 +169,7 @@ function PlayerAuction({ room, team, act }: { room: RoomPublicState; team: TeamP
 
 function PlayerEvent({ room, team, act }: { room: RoomPublicState; team: TeamPublic; act: <T>(event: string, payload?: unknown, success?: string) => Promise<T | undefined> }) {
   const current = room.event.choicesByTeam[team.id];
+  const result = room.event.resultsByTeam[team.id];
   const [optionId, setOptionId] = useState(current?.optionId || "");
   const [cardId, setCardId] = useState(current?.cardId || "");
   useEffect(() => { setOptionId(current?.optionId || ""); setCardId(current?.cardId || ""); }, [current?.optionId, current?.cardId, room.event.eventIndex]);
@@ -172,9 +177,17 @@ function PlayerEvent({ room, team, act }: { room: RoomPublicState; team: TeamPub
   return (
     <Card>
       <SectionTitle title={room.event.event?.name || "Sự kiện"} description={room.event.event?.description} action={<Badge tone={room.event.status === "open" ? "warning" : "neutral"}>{room.event.status === "open" ? "Đang quyết định" : "Đã xử lý/chưa mở"}</Badge>} />
-      <div className="event-options">{room.event.event?.options.map((option) => <button type="button" key={option.id} className={`event-option ${optionId === option.id ? "selected" : ""}`} onClick={() => setOptionId(option.id)}><div><span>{option.capitalCost} triệu</span><strong>{option.title}</strong></div><p>{option.description}</p><ProjectEffects effects={option.effects} /></button>)}</div>
-      <label className="field"><span>Thẻ phòng thủ tùy chọn</span><select value={cardId} onChange={(event) => setCardId(event.target.value)}><option value="">Không dùng thẻ</option>{defenseCards.map((card) => <option key={card.id} value={card.id}>{card.name}</option>)}</select></label>
-      <Button className="wide" disabled={room.event.status !== "open" || !optionId} onClick={() => act("player:event-choose", { optionId, cardId: cardId || null }, "Đã khóa phương án")}>Xác nhận phương án</Button>
+      {room.event.status === "resolved" ? (
+        result
+          ? <EventResolutionSummary result={result} />
+          : <EmptyState title="Chưa có kết quả sự kiện" text="Giảng viên cần mở và xử lý sự kiện trước." />
+      ) : (
+        <>
+          <div className="event-options">{room.event.event?.options.map((option) => <button type="button" key={option.id} disabled={room.event.status !== "open"} className={`event-option ${optionId === option.id ? "selected" : ""}`} onClick={() => setOptionId(option.id)}><div><span>{option.capitalCost} triệu</span><strong>{option.title}</strong></div><p>{option.description}</p><ProjectEffects effects={option.effects} /></button>)}</div>
+          <label className="field"><span>Thẻ phòng thủ tùy chọn</span><select disabled={room.event.status !== "open"} value={cardId} onChange={(event) => setCardId(event.target.value)}><option value="">Không dùng thẻ</option>{defenseCards.map((card) => <option key={card.id} value={card.id}>{card.name}</option>)}</select></label>
+          <Button className="wide" disabled={room.event.status !== "open" || !optionId} onClick={() => act("player:event-choose", { optionId, cardId: cardId || null }, "Đã khóa phương án")}>Xác nhận phương án</Button>
+        </>
+      )}
     </Card>
   );
 }

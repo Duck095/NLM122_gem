@@ -64,6 +64,15 @@ export interface ProjectOwned {
   effects: Partial<Indicators>;
 }
 
+export interface ScoreBreakdown {
+  indicatorAverage: number;
+  balanceBonus: number;
+  projectBonus: number;
+  capitalBonus: number;
+  knowledgeBonus: number;
+  total: number;
+}
+
 export interface TeamPublic {
   id: string;
   code: string;
@@ -77,6 +86,7 @@ export interface TeamPublic {
   cards: TacticalCard[];
   projects: ProjectOwned[];
   correctAnswers: number;
+  scoreBreakdown: ScoreBreakdown;
   score: number;
   rank: number;
 }
@@ -108,6 +118,7 @@ export interface QuizPublicState {
   discussionDeadline: number | null;
   mandatoryDeadline: number | null;
   pendingBlindBoxTeamId: string | null;
+  lastOpenedBlindBoxIndex: number | null;
   lastOutcome: {
     type: "correct" | "wrong" | "timeout" | "no_answer" | "info";
     message: string;
@@ -162,12 +173,29 @@ export interface EventDefinitionPublic {
   options: EventOptionPublic[];
 }
 
+export interface EventResolutionPublic {
+  optionId: string;
+  optionTitle: string;
+  capitalCost: number;
+  baseEffects: Partial<Indicators>;
+  appliedEffects: Partial<Indicators>;
+  cardId: string | null;
+  cardType: TacticalCardType | null;
+  cardName: string | null;
+  automatic: boolean;
+  capitalBefore: number;
+  capitalAfter: number;
+  indicatorsBefore: Indicators;
+  indicatorsAfter: Indicators;
+}
+
 export interface EventPublicState {
   status: EventStatus;
   eventIndex: number;
   event: EventDefinitionPublic | null;
   choicesByTeam: Record<string, { optionId: string; cardId: string | null }>;
   resolvedTeamIds: string[];
+  resultsByTeam: Record<string, EventResolutionPublic>;
 }
 
 export interface StrategyPackagePublic {

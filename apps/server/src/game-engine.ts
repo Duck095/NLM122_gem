@@ -66,6 +66,7 @@ export class GameEngine {
     room.quiz.answeringTeamId = null;
     room.quiz.eliminatedTeamIds = [];
     room.quiz.buzzRound = 0;
+    room.quiz.lastOpenedBlindBoxIndex = null;
     room.quiz.lastOutcome = { type: "info", message: "Câu hỏi đầu tiên đã sẵn sàng." };
     this.store.addLog(room, "Trò chơi đã bắt đầu.", "success");
     this.changed(room);
@@ -94,6 +95,7 @@ export class GameEngine {
     room.quiz.discussionDeadline = null;
     room.quiz.mandatoryDeadline = null;
     room.quiz.pendingBlindBoxTeamId = null;
+    room.quiz.lastOpenedBlindBoxIndex = null;
     room.quiz.lastOutcome = { type: "info", message: `Câu hỏi ${questionIndex + 1} đã được trình chiếu.` };
     this.store.addLog(room, `Đã mở câu hỏi ${questionIndex + 1}/15.`, "info");
     this.changed(room);
@@ -259,6 +261,7 @@ export class GameEngine {
 
     box.opened = true;
     box.openedByTeamId = teamId;
+    room.quiz.lastOpenedBlindBoxIndex = boxIndex;
     const reward = box.reward;
     if (reward.kind === "capital") {
       team.capital += reward.capital ?? 0;
@@ -379,6 +382,7 @@ export class GameEngine {
     room.event.event = event;
     room.event.choicesByTeam = {};
     room.event.resolvedTeamIds = [];
+    room.event.resultsByTeam = {};
     this.store.addLog(room, `Công bố sự kiện: ${event.name}.`, "warning");
     this.changed(room);
   }
@@ -408,10 +412,13 @@ export class GameEngine {
     const event = EVENTS[room.event.eventIndex];
     if (!event) throw new Error("Sự kiện không hợp lệ");
 
+    room.event.resultsByTeam = {};
     room.teams.forEach((team) => {
       const savedChoice = room.event.choicesByTeam[team.id];
       const option = event.options.find((item) => item.id === savedChoice?.optionId) ?? event.options[event.options.length - 1];
       const card = findUsableCard(team, savedChoice?.cardId);
+      const capitalBefore = team.capital;
+      const indicatorsBefore = { ...team.indicators };
       team.capital -= option.capitalCost;
       const effects = { ...option.effects };
       if (card?.type === "shield") {
@@ -428,6 +435,26 @@ export class GameEngine {
       }
       applyIndicatorEffects(team.indicators, effects);
       room.event.resolvedTeamIds.push(team.id);
+      room.event.resultsByTeam[team.id] = {
+        optionId: option.id,
+        optionTitle: option.title,
+        capitalCost: option.capitalCost,
+        baseEffects: { ...option.effects },
+        appliedEffects: { ...effects },
+        cardId: card?.id ?? null,
+        cardType: card?.type ?? null,
+        cardName: card?.name ?? null,
+        automatic: !savedChoice,
+        capitalBefore,
+        capitalAfter: team.capital,
+        indicatorsBefore,
+        indicatorsAfter: { ...team.indicators }
+      };
+      this.store.addLog(
+        room,
+        `${team.name}: ${option.title}, vốn ${capitalBefore} → ${team.capital} triệu${card ? `, dùng ${card.name}` : ""}.`,
+        savedChoice ? "info" : "warning"
+      );
     });
     room.event.status = "resolved";
     this.store.addLog(room, `Đã xử lý sự kiện ${event.name}.`, "success");

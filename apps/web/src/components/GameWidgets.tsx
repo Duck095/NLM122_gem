@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
-import type { IndicatorKey, Indicators, RoomPublicState, TeamPublic } from "@mln122/shared";
+import type { EventResolutionPublic, IndicatorKey, Indicators, RoomPublicState, TeamPublic } from "@mln122/shared";
 import { INDICATOR_LABELS } from "@mln122/shared";
 import { Badge, Button, Card, Metric } from "./Ui";
 
@@ -224,4 +224,35 @@ function quizStatusLabel(status: RoomPublicState["quiz"]["status"]): string {
 
 export function ProjectEffects({ effects }: { effects: Partial<Indicators> }) {
   return <div className="effect-chips">{Object.entries(effects).map(([key, value]) => <span className={Number(value) >= 0 ? "positive" : "negative"} key={key}>{INDICATOR_LABELS[key as IndicatorKey]} {Number(value) >= 0 ? "+" : ""}{value}</span>)}</div>;
+}
+
+export function EventResolutionSummary({
+  result,
+  teamName
+}: {
+  result: EventResolutionPublic;
+  teamName?: string;
+}) {
+  const cardExplanation = result.cardType === "shield"
+    ? "Đã chặn toàn bộ điểm chỉ số âm; chi phí vốn vẫn được trừ."
+    : result.cardType === "project_recovery"
+      ? "Đã giảm 50% từng tác động chỉ số âm; chi phí vốn vẫn được trừ."
+      : null;
+
+  return (
+    <div className="event-resolution-summary">
+      <div className="event-resolution-heading">
+        <div>{teamName ? <strong>{teamName}</strong> : null}<span>{result.optionTitle}</span></div>
+        <Badge tone={result.automatic ? "warning" : "success"}>{result.automatic ? "Tự động áp dụng" : "Đã lựa chọn"}</Badge>
+      </div>
+      <div className="event-capital-flow">
+        <span>Vốn</span>
+        <strong>{result.capitalBefore} → {result.capitalAfter} triệu</strong>
+        <small>Chi phí {result.capitalCost} triệu</small>
+      </div>
+      <ProjectEffects effects={result.appliedEffects} />
+      {result.cardName ? <p className="event-card-result"><strong>{result.cardName}</strong> · {cardExplanation}</p> : null}
+      {result.automatic ? <p className="event-auto-note">Đội không khóa phương án trước khi giảng viên xử lý, nên hệ thống áp dụng phương án cuối cùng của sự kiện.</p> : null}
+    </div>
+  );
 }

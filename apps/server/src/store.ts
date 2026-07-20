@@ -22,7 +22,8 @@ import {
   createTeamCode,
   createToken,
   shuffle,
-  teamScore
+  teamScore,
+  teamScoreBreakdown
 } from "./utils.js";
 
 export class RoomStore {
@@ -42,6 +43,8 @@ export class RoomStore {
       if (!raw.trim()) return;
       const parsed = JSON.parse(raw) as RoomInternal[];
       parsed.forEach((room) => {
+        room.quiz.lastOpenedBlindBoxIndex ??= null;
+        room.event.resultsByTeam ??= {};
         if (room.quiz.status === "answering" || room.quiz.status === "mandatory") {
           room.quiz.status = "buzzing";
           room.quiz.answeringTeamId = null;
@@ -113,6 +116,7 @@ export class RoomStore {
         discussionDeadline: null,
         mandatoryDeadline: null,
         pendingBlindBoxTeamId: null,
+        lastOpenedBlindBoxIndex: null,
         lastOutcome: null
       },
       blindBoxes: shuffle(BLIND_REWARDS).map((reward, index) => ({
@@ -136,7 +140,8 @@ export class RoomStore {
         eventIndex: 0,
         event: EVENTS[0],
         choicesByTeam: {},
-        resolvedTeamIds: []
+        resolvedTeamIds: [],
+        resultsByTeam: {}
       },
       strategy: {
         status: "idle",
@@ -251,6 +256,7 @@ export class RoomStore {
           : [],
       projects: team.projects.map((project) => ({ ...project, effects: { ...project.effects } })),
       correctAnswers: team.correctAnswers,
+      scoreBreakdown: teamScoreBreakdown(team),
       score: teamScore(team),
       rank: rankMap.get(team.id) ?? room.teams.length
     }));
@@ -274,17 +280,24 @@ export class RoomStore {
       };
     }
 
-    const blindBoxes: BlindBoxPublic[] = room.blindBoxes.map((box) => ({
-      index: box.index,
-      opened: box.opened,
-      ...(box.opened
-        ? {
-            openedByTeamId: box.openedByTeamId,
-            rewardName: box.reward.name,
-            rewardDescription: box.reward.description
-          }
-        : {})
-    }));
+    const playerCanChooseBlindBox =
+      role === "player" &&
+      room.quiz.status === "blindbox" &&
+      teamId === room.quiz.pendingBlindBoxTeamId;
+    const canSeeBlindBoxes = role !== "player" || playerCanChooseBlindBox;
+    const blindBoxes: BlindBoxPublic[] = canSeeBlindBoxes
+      ? room.blindBoxes.map((box) => ({
+          index: box.index,
+          opened: box.opened,
+          ...(box.opened
+            ? {
+                openedByTeamId: box.openedByTeamId,
+                rewardName: box.reward.name,
+                rewardDescription: box.reward.description
+              }
+            : {})
+        }))
+      : [];
 
     const eventChoices =
       role === "host" || room.event.status === "resolved"
@@ -312,6 +325,10 @@ export class RoomStore {
       teams,
       quiz: {
         ...room.quiz,
+        pendingBlindBoxTeamId:
+          role === "player" && !playerCanChooseBlindBox
+            ? null
+            : room.quiz.pendingBlindBoxTeamId,
         question
       },
       blindBoxes,

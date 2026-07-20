@@ -222,6 +222,11 @@ function QuizStage({ room }: { room: RoomPublicState }) {
   const totalMs = room.quiz.status === "mandatory" ? 5000 : 15000;
   const questionNumber = question?.number || room.quiz.questionIndex + 1;
   const options = question?.options || [];
+  const showBlindBoxes =
+    room.quiz.status === "blindbox" ||
+    (room.quiz.status === "resolved" && room.quiz.lastOpenedBlindBoxIndex !== null);
+
+  if (showBlindBoxes) return <ScreenBlindBoxStage room={room} />;
 
   return (
     <div className="classic-stage-content classic-quiz-stage">
@@ -262,6 +267,52 @@ function QuizStage({ room }: { room: RoomPublicState }) {
   );
 }
 
+function ScreenBlindBoxStage({ room }: { room: RoomPublicState }) {
+  const selectedIndex = room.quiz.lastOpenedBlindBoxIndex;
+  const selectedBox = selectedIndex === null
+    ? undefined
+    : room.blindBoxes.find((box) => box.index === selectedIndex);
+  const teamId = room.quiz.pendingBlindBoxTeamId || room.quiz.lastOutcome?.teamId;
+  const team = room.teams.find((item) => item.id === teamId);
+  const isSelecting = room.quiz.status === "blindbox";
+
+  return (
+    <div className="classic-stage-content classic-blindbox-stage">
+      <StageHeading
+        step="PHẦN THƯỞNG KIẾN THỨC"
+        title={isSelecting ? "Chọn túi mù" : "Túi mù đã mở"}
+      >
+        <p className="classic-blindbox-team">
+          {team ? <><i style={{ background: team.color }} /><strong>{team.name}</strong></> : null}
+          <span>{isSelecting ? " đang lựa chọn một phần thưởng" : " đã nhận phần thưởng"}</span>
+        </p>
+      </StageHeading>
+
+      <div className="classic-blindbox-grid" aria-label="Danh sách túi mù">
+        {room.blindBoxes.map((box) => (
+          <div
+            className={`blindbox classic-screen-blindbox ${box.opened ? "opened" : ""} ${box.index === selectedIndex ? "revealed" : ""}`}
+            key={box.index}
+          >
+            <span>{String(box.index + 1).padStart(2, "0")}</span>
+            {box.opened ? <small>{box.rewardName}</small> : <strong>?</strong>}
+          </div>
+        ))}
+      </div>
+
+      {selectedBox ? (
+        <div className="classic-blindbox-reward">
+          <span>PHẦN THƯỞNG Ô {String(selectedBox.index + 1).padStart(2, "0")}</span>
+          <strong>{selectedBox.rewardName}</strong>
+          <p>{selectedBox.rewardDescription}</p>
+        </div>
+      ) : (
+        <div className="classic-blindbox-waiting">Lựa chọn trên màn hình tập đoàn sẽ được cập nhật trực tiếp tại đây.</div>
+      )}
+    </div>
+  );
+}
+
 function AuctionStage({ room }: { room: RoomPublicState }) {
   const leader = room.teams.find((team) => team.id === room.auction.leaderTeamId);
   return (
@@ -290,6 +341,37 @@ function AuctionStage({ room }: { room: RoomPublicState }) {
 function EventStage({ room }: { room: RoomPublicState }) {
   const answered = Object.keys(room.event.choicesByTeam).length;
   const percentage = room.teams.length ? (answered / room.teams.length) * 100 : 0;
+
+  if (room.event.status === "resolved") {
+    return (
+      <div className="classic-stage-content classic-event-stage classic-event-results-stage">
+        <StageHeading step="GIAI ĐOẠN 3 / 5" title="Kết quả ứng phó sự kiện" />
+        <div className="classic-event-result-title">
+          <strong>{room.event.event?.name}</strong>
+          <span>Vốn và chỉ số dưới đây đã được áp dụng vào bảng xếp hạng.</span>
+        </div>
+        <div className="classic-event-results-grid">
+          {room.teams.map((team) => {
+            const result = room.event.resultsByTeam[team.id];
+            if (!result) return null;
+            return (
+              <div className="classic-event-result" key={team.id} style={{ "--team-color": team.color } as CSSProperties}>
+                <div className="classic-event-result-team">
+                  <i>{teamInitials(team.name)}</i>
+                  <div><strong>{team.name}</strong><span>{result.automatic ? "Tự động áp dụng" : "Đã lựa chọn"}</span></div>
+                </div>
+                <h3>{result.optionTitle}</h3>
+                <p>Vốn {formatNumber(result.capitalBefore)} → {formatNumber(result.capitalAfter)} triệu</p>
+                <ProjectEffects effects={result.appliedEffects} />
+                {result.cardName ? <small>Dùng thẻ: {result.cardName}</small> : null}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="classic-stage-content classic-event-stage">
       <StageHeading step="GIAI ĐOẠN 3 / 5" title="Biến động và thích ứng" />
@@ -299,7 +381,6 @@ function EventStage({ room }: { room: RoomPublicState }) {
         <p>{room.event.event?.description || "Các tập đoàn hãy sẵn sàng đưa ra quyết định chiến lược."}</p>
       </div>
       <ResponseProgress label={`${answered}/${room.teams.length} tập đoàn đã đưa ra quyết định`} percentage={percentage} />
-      {room.event.status === "resolved" ? <div className="classic-result-ribbon">Kết quả sự kiện đã được áp dụng vào vốn và các chỉ số phát triển.</div> : null}
     </div>
   );
 }
@@ -328,9 +409,31 @@ function StrategyStage({ room }: { room: RoomPublicState }) {
 function ResultsStage({ room }: { room: RoomPublicState }) {
   const ranked = [...room.teams].sort((a, b) => a.rank - b.rank);
   const podium = [ranked[1], ranked[0], ranked[2]];
+  const winner = ranked[0];
+  const runnerUp = ranked[1];
+  const scoreMargin = winner && runnerUp ? Math.round((winner.score - runnerUp.score) * 10) / 10 : null;
   return (
     <div className="classic-stage-content classic-results-stage">
       <StageHeading step="GIAI ĐOẠN 5 / 5" title="Kết quả hành trình Việt Nam 2045" />
+      {winner ? (
+        <div className="classic-winner-reason">
+          <div className="classic-winner-reason-copy">
+            <span>VÌ SAO {winner.name.toLocaleUpperCase("vi-VN")} DẪN ĐẦU?</span>
+            <strong>{winner.score} điểm tổng hợp</strong>
+            <p>
+              Điểm cao nhất được tạo từ năm trụ cột, khả năng giữ cân bằng, dự án, vốn còn lại và kiến thức.
+              {scoreMargin !== null ? ` Cao hơn hạng nhì ${scoreMargin} điểm.` : ""}
+            </p>
+          </div>
+          <div className="classic-score-breakdown">
+            <div><span>TB trụ cột</span><strong>{winner.scoreBreakdown.indicatorAverage}</strong></div>
+            <div><span>Cân bằng</span><strong>+{winner.scoreBreakdown.balanceBonus}</strong></div>
+            <div><span>Dự án</span><strong>+{winner.scoreBreakdown.projectBonus}</strong></div>
+            <div><span>Vốn</span><strong>+{winner.scoreBreakdown.capitalBonus}</strong></div>
+            <div><span>Kiến thức</span><strong>+{winner.scoreBreakdown.knowledgeBonus}</strong></div>
+          </div>
+        </div>
+      ) : null}
       <div className="classic-podium">
         {podium.map((team, index) => team ? (
           <div

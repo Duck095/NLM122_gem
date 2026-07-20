@@ -20,7 +20,7 @@ export interface MemberInternal {
   joinedAt: number;
 }
 
-export interface TeamInternal extends Omit<TeamPublic, "members" | "score" | "rank"> {
+export interface TeamInternal extends Omit<TeamPublic, "members" | "scoreBreakdown" | "score" | "rank"> {
   members: MemberInternal[];
 }
 

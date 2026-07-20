@@ -1,5 +1,5 @@
 import { customAlphabet, nanoid } from "nanoid";
-import type { IndicatorKey, Indicators, TacticalCard, TacticalCardType } from "@mln122/shared";
+import type { IndicatorKey, Indicators, ScoreBreakdown, TacticalCard, TacticalCardType } from "@mln122/shared";
 import type { TeamInternal } from "./types.js";
 
 const roomAlphabet = customAlphabet("0123456789", 6);
@@ -49,7 +49,7 @@ export function applyIndicatorEffects(indicators: Indicators, effects: Partial<I
   });
 }
 
-export function teamScore(team: TeamInternal): number {
+export function teamScoreBreakdown(team: TeamInternal): ScoreBreakdown {
   const values = Object.values(team.indicators);
   const average = values.reduce((sum, value) => sum + value, 0) / values.length;
   const spread = Math.max(...values) - Math.min(...values);
@@ -57,7 +57,19 @@ export function teamScore(team: TeamInternal): number {
   const projectBonus = team.projects.length * 8;
   const capitalBonus = Math.max(0, team.capital) / 100;
   const knowledgeBonus = team.correctAnswers * 2;
-  return Math.round((average + balanceBonus + projectBonus + capitalBonus + knowledgeBonus) * 10) / 10;
+  const roundComponent = (value: number) => Math.round(value * 100) / 100;
+  return {
+    indicatorAverage: roundComponent(average),
+    balanceBonus: roundComponent(balanceBonus),
+    projectBonus,
+    capitalBonus: roundComponent(capitalBonus),
+    knowledgeBonus,
+    total: Math.round((average + balanceBonus + projectBonus + capitalBonus + knowledgeBonus) * 10) / 10
+  };
+}
+
+export function teamScore(team: TeamInternal): number {
+  return teamScoreBreakdown(team).total;
 }
 
 export function addCard(team: TeamInternal, type: TacticalCardType, name: string, description: string): TacticalCard {

@@ -5,6 +5,7 @@ import { INDICATOR_LABELS } from "@mln122/shared";
 import { Badge, Button, Card, EmptyState, PageShell, SectionTitle, TopBar } from "../components/Ui";
 import {
   ConnectionBadge,
+  EventResolutionSummary,
   IndicatorGrid,
   Leaderboard,
   PhaseRail,
@@ -181,6 +182,14 @@ function HostStage({ room, act }: { room: RoomPublicState; act: <T>(event: strin
         </div>
         {room.event.event ? <div className="event-stage"><Badge tone={room.event.status === "open" ? "warning" : "neutral"}>{room.event.status === "open" ? "Đang nhận quyết định" : "Chưa mở/đã xử lý"}</Badge><h2>{room.event.event.name}</h2><p>{room.event.event.description}</p><div className="response-count">{Object.keys(room.event.choicesByTeam).length}/{room.teams.length} tập đoàn đã khóa phương án</div></div> : null}
         <div className="stage-actions"><Button onClick={() => act("host:event-open", { eventIndex: room.event.eventIndex })}>Mở sự kiện</Button><Button variant="success" disabled={room.event.status !== "open"} onClick={() => act("host:event-resolve", {}, "Đã áp dụng kết quả sự kiện")}>Xử lý kết quả</Button></div>
+        {room.event.status === "resolved" ? (
+          <div className="event-resolution-grid">
+            {room.teams.map((team) => {
+              const result = room.event.resultsByTeam[team.id];
+              return result ? <EventResolutionSummary key={team.id} result={result} teamName={team.name} /> : null;
+            })}
+          </div>
+        ) : null}
       </Card>
     );
   }
