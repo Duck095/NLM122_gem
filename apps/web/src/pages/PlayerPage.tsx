@@ -130,7 +130,7 @@ function PlayerQuiz({ room, team, act }: { room: RoomPublicState; team: TeamPubl
         {room.quiz.status === "buzzing" ? (
           isEliminated
             ? <EmptyState title="Tập đoàn đã hết quyền ở câu này" text="Hãy theo dõi và chuẩn bị cho câu tiếp theo." />
-            : <div className="buzz-inline"><p>Lượt {room.quiz.buzzRound}: tập đoàn nhanh nhất sẽ được xem đáp án.</p><button type="button" className="buzz-button" onClick={() => act("player:quiz-buzz")}>GIÀNH QUYỀN TRẢ LỜI</button></div>
+            : <div className="buzz-inline"><p>Lượt {room.quiz.buzzRound}: bất kỳ thành viên nào cũng có thể bấm. Người bấm nhanh nhất sẽ đại diện cho cả tập đoàn trả lời.</p><button type="button" className="buzz-button" onClick={() => act("player:quiz-buzz")}>GIÀNH QUYỀN TRẢ LỜI</button></div>
         ) : room.quiz.status === "preview" ? (
           <EmptyState title="Hãy thảo luận câu hỏi" text="Đáp án và nút giành quyền sẽ xuất hiện khi giảng viên mở lượt." />
         ) : isWaitingForBlindBox ? (
@@ -145,7 +145,7 @@ function PlayerQuiz({ room, team, act }: { room: RoomPublicState; team: TeamPubl
 function BlindBoxGrid({ room, team, act }: { room: RoomPublicState; team: TeamPublic; act: <T>(event: string, payload?: unknown, success?: string) => Promise<T | undefined> }) {
   return (
     <Card className="blindbox-card">
-      <SectionTitle title="Chọn một túi mù" description="Chọn một trong 15 ô. Phần thưởng được áp dụng trực tiếp vào tập đoàn." />
+      <SectionTitle title="Chọn một túi mù" description="Một thành viên bất kỳ chọn 1 ô đại diện cho cả tập đoàn. Sau khi một người chọn, các thành viên còn lại không thể chọn thêm." />
       <div className="blindbox-grid">{room.blindBoxes.map((box) => <button type="button" key={box.index} disabled={box.opened} className={`blindbox ${box.opened ? "opened" : ""} ${box.openedByTeamId === team.id ? "mine" : ""}`} onClick={() => act("player:blindbox-open", { boxIndex: box.index })}><span>{String(box.index + 1).padStart(2, "0")}</span>{box.opened ? <small>{box.rewardName}</small> : <strong>?</strong>}</button>)}</div>
     </Card>
   );

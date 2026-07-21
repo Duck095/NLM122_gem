@@ -36,168 +36,177 @@ export const INITIAL_INDICATORS: Indicators = {
 export const QUESTIONS: QuestionDefinition[] = [
   {
     id: "q01",
-    prompt: "Đại hội nào mở ra công cuộc Đổi mới ở Việt Nam?",
-    options: ["Đại hội IV", "Đại hội V", "Đại hội VI", "Đại hội VII"],
+    prompt: "Đại hội Đảng nào đã mở đầu cho công cuộc Đổi mới vào năm 1986?",
+    options: ["Đại hội V (1982) ", 
+              "Đại hội VI (1986) ", 
+              "Đại hội VII (1991) ", 
+              "Đại hội VIII (1996)"],
     correctIndex: 2,
-    explanation: "Đại hội VI của Đảng năm 1986 khởi xướng đường lối Đổi mới toàn diện."
+    explanation: "Vì Đại hội VI năm 1986 mở đầu đường lối Đổi mới ở Việt Nam."
   },
   {
     id: "q02",
-    prompt: "Việt Nam chính thức gia nhập ASEAN vào năm nào?",
-    options: ["1986", "1995", "2000", "2007"],
-    correctIndex: 1,
-    explanation: "Việt Nam trở thành thành viên thứ bảy của ASEAN vào ngày 28/7/1995."
+    prompt: "Giai đoạn 1986–1995, Việt Nam tập trung phát triển các chương trình kinh tế nào?",
+    options: ["Công nghiệp nặng và hóa chất", 
+              "Công nghiệp số và trí tuệ nhân tạo", 
+              "Nông nghiệp, tiêu dùng, xuất khẩu", 
+              "Dịch vụ tài chính và du lịch"],
+    correctIndex: 3,
+    explanation: "Vì giai đoạn đầu Đổi mới ưu tiên nông nghiệp, hàng tiêu dùng và xuất khẩu."
   },
   {
     id: "q03",
-    prompt: "Việt Nam trở thành thành viên của WTO vào năm nào?",
-    options: ["1995", "2001", "2007", "2010"],
-    correctIndex: 2,
-    explanation: "Việt Nam chính thức trở thành thành viên WTO vào ngày 11/1/2007."
+    prompt: "Văn bản luật nào ban hành năm 1987 giúp thu hút vốn và công nghệ nước ngoài?",
+    options: ["Luật Đầu tư nước ngoài",
+              "Luật Doanh nghiệp tư nhân", 
+              "Luật Thương mại quốc tế", 
+              "Luật Đất đai sửa đổi"],
+    correctIndex: 1,
+    explanation: "Vì Luật Đầu tư nước ngoài năm 1987 giúp thu hút vốn và công nghệ từ nước ngoài."
   },
   {
     id: "q04",
-    prompt: "Mục tiêu quan trọng của công nghiệp hóa, hiện đại hóa là gì?",
+    prompt: "Thành tựu nông nghiệp nổi bật nhất của Việt Nam trong giai đoạn đầu Đổi mới là:",
     options: [
-      "Chỉ tăng sản lượng nông nghiệp",
-      "Chuyển đổi căn bản nền sản xuất và nâng cao năng suất",
-      "Giảm hội nhập kinh tế quốc tế",
-      "Chỉ phát triển các đô thị lớn"
+      "Cơ giới hóa toàn bộ đồng ruộng ",
+      "Trở thành nước nhập khẩu gạo",
+      "Xây dựng xong các đập thủy lợi",
+      "Từ thiếu đói sang xuất khẩu gạo"
     ],
-    correctIndex: 1,
-    explanation: "Công nghiệp hóa, hiện đại hóa hướng đến chuyển đổi nền sản xuất, nâng năng suất và chất lượng phát triển."
+    correctIndex: 4,
+    explanation: "Vì Việt Nam đã từ thiếu lương thực trở thành nước xuất khẩu gạo."
   },
   {
     id: "q05",
-    prompt: "Nội dung nào phản ánh đúng kinh tế tri thức?",
+    prompt: "Nhiệm vụ trọng tâm được Đại hội VIII (1996) xác định cho đất nước là gì?",
     options: [
-      "Tri thức và đổi mới sáng tạo trở thành nguồn lực chủ yếu",
-      "Tài nguyên thiên nhiên là nguồn lực duy nhất",
-      "Giảm sử dụng công nghệ trong sản xuất",
-      "Tách rời giáo dục với doanh nghiệp"
+      " Khắc phục khủng hoảng kinh tế",
+      "Đẩy mạnh công nghiệp hóa (CNH)",
+      "Phát triển mạnh kinh tế tri thức",
+      "Chuyển đổi số nền kinh tế xanh"
     ],
-    correctIndex: 0,
-    explanation: "Kinh tế tri thức coi tri thức, công nghệ và đổi mới sáng tạo là động lực trung tâm."
+    correctIndex: 2,
+    explanation: "Vì Đại hội VIII xác định nhiệm vụ đẩy mạnh công nghiệp hóa, hiện đại hóa."
   },
   {
     id: "q06",
-    prompt: "Cách mạng công nghiệp lần thứ tư gắn nổi bật với nhóm công nghệ nào?",
+    prompt: "Việt Nam chính thức trở thành thành viên Tổ chức Thương mại Thế giới (WTO) năm nào?",
     options: [
-      "Hơi nước và cơ khí",
-      "Điện và dây chuyền lắp ráp",
-      "Điện tử và máy tính cá nhân",
-      "AI, dữ liệu lớn, IoT và tự động hóa thông minh"
+      "1995 ",
+      "2000 ",
+      "2007",
+      "2011"
     ],
     correctIndex: 3,
-    explanation: "Cách mạng công nghiệp 4.0 nổi bật với AI, IoT, dữ liệu lớn, robot và các hệ thống kết nối thông minh."
+    explanation: "Vì Việt Nam chính thức gia nhập WTO vào năm 2007."
   },
   {
     id: "q07",
-    prompt: "FDI có thể đóng góp trực tiếp cho quá trình công nghiệp hóa thông qua yếu tố nào?",
+    prompt: "Hạn chế lớn của ngành công nghiệp Việt Nam trong giai đoạn 1996–2010 là gì?",
     options: [
-      "Bổ sung vốn, công nghệ và kinh nghiệm quản trị",
-      "Loại bỏ hoàn toàn doanh nghiệp trong nước",
-      "Giảm nhu cầu đào tạo lao động",
-      "Ngăn cản xuất khẩu"
+      "Không có vốn đầu tư từ nước ngoài",
+      "Thiếu các vùng kinh tế trọng điểm",
+      "Chỉ tập trung vào ngành nông nghiệp",
+      "Chủ yếu là gia công và lắp ráp"
     ],
-    correctIndex: 0,
-    explanation: "FDI có thể bổ sung vốn, công nghệ, quản trị và kết nối thị trường nếu được khai thác hiệu quả."
+    correctIndex: 4,
+    explanation: "Vì công nghiệp Việt Nam còn phụ thuộc nhiều vào gia công và lắp ráp."
   },
   {
     id: "q08",
-    prompt: "Phát triển công nghiệp hỗ trợ có ý nghĩa quan trọng nhất đối với điều gì?",
+    prompt: "Từ năm 2011, mô hình tăng trưởng của Việt Nam chuyển sang dựa nhiều hơn vào yếu tố: ",
     options: [
-      "Tăng phụ thuộc nhập khẩu",
-      "Nâng tỷ lệ nội địa hóa và khả năng tham gia chuỗi giá trị",
-      "Chỉ phục vụ khu vực nông nghiệp",
-      "Giảm liên kết giữa các doanh nghiệp"
+      "Tài nguyên và lao động giá rẻ",
+      "Khoa học và đổi mới sáng tạo",
+      "Vốn đầu tư của ngân sách nhà nước",
+      "Khai thác và xuất khẩu khoáng sản"
     ],
-    correctIndex: 1,
-    explanation: "Công nghiệp hỗ trợ giúp tăng nội địa hóa, liên kết doanh nghiệp và nâng vị trí trong chuỗi giá trị."
+    correctIndex: 2,
+    explanation: "Vì Việt Nam chuyển sang phát triển dựa nhiều hơn vào khoa học và đổi mới sáng tạo."
   },
   {
     id: "q09",
-    prompt: "Chuyển đổi số trong doanh nghiệp chủ yếu nhằm mục tiêu nào?",
+    prompt: "Công nghệ nào sau đây là đặc trưng tiêu biểu của Cách mạng công nghiệp 4.0?",
     options: [
-      "Chỉ thay giấy tờ bằng tệp điện tử",
-      "Tái cấu trúc hoạt động dựa trên dữ liệu và công nghệ số",
-      "Loại bỏ mọi lao động con người",
-      "Chỉ mở thêm trang mạng xã hội"
+      "Máy hơi nước và máy dệt cơ khí",
+      "Động cơ đốt trong và điện năng",
+      "AI, Internet vạn vật, Dữ liệu lớn",
+      "Kỹ thuật luyện kim và in ấn cũ"
     ],
-    correctIndex: 1,
-    explanation: "Chuyển đổi số là thay đổi mô hình vận hành, quản trị và tạo giá trị dựa trên dữ liệu và công nghệ."
+    correctIndex: 3,
+    explanation: "Vì AI, Internet vạn vật và Dữ liệu lớn là công nghệ tiêu biểu của cách mạng 4.0."
   },
   {
     id: "q10",
-    prompt: "Kinh tế xanh hướng tới sự kết hợp nào?",
+    prompt: "Hiệp định thương mại tự do (FTA) thế hệ mới nào Việt Nam đã tham gia gần đây?",
     options: [
-      "Tăng trưởng kinh tế, công bằng xã hội và bảo vệ môi trường",
-      "Tăng trưởng bằng mọi giá",
-      "Chỉ bảo vệ môi trường và dừng sản xuất",
-      "Chỉ ưu tiên lợi ích ngắn hạn"
+      "Hiệp định AFTA và APEC",
+      " Hiệp định WTO và ASEAN",
+      "Hiệp định SEV và SEATO",
+      "Hiệp định CPTPP và EVFTA"
     ],
-    correctIndex: 0,
-    explanation: "Kinh tế xanh hướng đến tăng trưởng hiệu quả, công bằng và giảm tác động tiêu cực đến môi trường."
+    correctIndex: 4,
+    explanation: "Vì CPTPP và EVFTA là các hiệp định thương mại tự do thế hệ mới."
   },
   {
     id: "q11",
-    prompt: "Nguồn nhân lực chất lượng cao có vai trò gì trong hiện đại hóa?",
+    prompt: "Thách thức lớn về lao động mà Việt Nam đối mặt trong bối cảnh tự động hóa là: ",
     options: [
-      "Tiếp nhận, làm chủ và sáng tạo công nghệ",
-      "Chỉ thực hiện lao động giản đơn",
-      "Làm giảm năng suất lao động",
-      "Thay thế hoàn toàn đầu tư công nghệ"
+      "Thừa quá nhiều lao động chất lượng",
+      "Mất việc làm ở nhóm kỹ năng thấp",
+      "Lao động không muốn làm công nghệ",
+      "Tỷ lệ lao động biết chữ còn quá thấp"
     ],
-    correctIndex: 0,
-    explanation: "Con người là chủ thể tiếp nhận, vận hành, cải tiến và sáng tạo công nghệ."
+    correctIndex: 2,
+    explanation: "Vì tự động hóa có thể thay thế lao động có kỹ năng thấp."
   },
   {
     id: "q12",
-    prompt: "Tự chủ kinh tế không có nghĩa là gì?",
+    prompt: "Theo mô hình CNH truyền thống, nguồn lực chủ yếu dựa vào yếu tố nào?",
     options: [
-      "Nâng năng lực nội sinh",
-      "Đa dạng hóa đối tác và thị trường",
-      "Đóng cửa, tách khỏi kinh tế thế giới",
-      "Tăng khả năng chống chịu trước cú sốc"
+      "Vốn, tài nguyên, lao động rẻ",
+      "Tri thức và dữ liệu số",
+      "Công nghệ AI và Robot",
+      "Nguồn nhân lực chất lượng cao"
     ],
-    correctIndex: 2,
-    explanation: "Tự chủ kinh tế không đồng nghĩa với khép kín; đó là năng lực nội sinh và khả năng hội nhập chủ động."
+    correctIndex: 1,
+    explanation: "Vì công nghiệp hóa truyền thống chủ yếu dựa vào vốn, tài nguyên và lao động rẻ."
   },
   {
     id: "q13",
-    prompt: "Hạ tầng logistics hiện đại tác động trực tiếp nhất đến yếu tố nào?",
+    prompt: "Đặc điểm về thời gian thực hiện của mô hình CNH hiện đại (4.0) là:",
     options: [
-      "Tăng chi phí lưu thông",
-      "Giảm hiệu quả chuỗi cung ứng",
-      "Giảm chi phí và tăng tốc độ lưu chuyển hàng hóa",
-      "Giảm khả năng kết nối vùng"
+      "Luôn kéo dài qua nhiều thế kỷ",
+      "Phải diễn ra tuần tự từng bước",
+      "Không thể xác định được thời gian",
+      "Có thể rút ngắn nhờ công nghệ"
     ],
-    correctIndex: 2,
-    explanation: "Logistics hiện đại giúp giảm chi phí, thời gian và tăng độ tin cậy của chuỗi cung ứng."
+    correctIndex: 4,
+    explanation: "Vì công nghệ hiện đại giúp rút ngắn quá trình công nghiệp hóa."
   },
   {
     id: "q14",
-    prompt: "Đổi mới sáng tạo trong doanh nghiệp được thể hiện rõ nhất qua hoạt động nào?",
+    prompt: "Mục tiêu về môi trường trong mô hình CNH–HĐH hiện nay hướng tới điều gì?",
     options: [
-      "Giữ nguyên sản phẩm và quy trình trong thời gian dài",
-      "Nghiên cứu, cải tiến sản phẩm, quy trình và mô hình kinh doanh",
-      "Chỉ tăng số giờ làm",
-      "Giảm đầu tư cho nhân lực"
+      "Khai thác tối đa tài nguyên có sẵn",
+      "Chấp nhận ô nhiễm để tăng trưởng",
+      "Gắn với kinh tế xanh và tuần hoàn",
+      "Chỉ tập trung vào công nghiệp nặng"
     ],
-    correctIndex: 1,
-    explanation: "Đổi mới sáng tạo bao gồm cải tiến sản phẩm, quy trình, quản trị và mô hình kinh doanh."
+    correctIndex: 3,
+    explanation: "Vì công nghiệp hóa hiện nay phải gắn với bảo vệ môi trường và phát triển bền vững."
   },
   {
     id: "q15",
-    prompt: "Định hướng phát triển cân bằng trong trò chơi yêu cầu tập đoàn quan tâm điều gì?",
+    prompt: "Mục tiêu cuối cùng của quá trình CNH–HĐH là xây dựng đất nước theo hướng:",
     options: [
-      "Chỉ tối đa hóa vốn",
-      "Chỉ tập trung vào công nghệ",
-      "Đồng thời cân bằng kinh tế, công nghệ, tự chủ, công bằng và bền vững",
-      "Bỏ qua tác động xã hội"
+      "Chỉ ưu tiên tăng trưởng GDP",
+      "Dân giàu, nước mạnh, công bằng",
+      "Độc quyền sản xuất công nghệ ",
+      "Xóa bỏ hoàn toàn ngành nông nghiệp"
     ],
-    correctIndex: 2,
-    explanation: "Phát triển bền vững đòi hỏi cân bằng cả năm trụ cột, không chỉ tối đa hóa một chỉ số."
+    correctIndex: 3,
+    explanation: "Vì công nghiệp hóa – hiện đại hóa không chỉ nhằm tăng trưởng kinh tế mà còn hướng tới nâng cao đời sống nhân dân, xây dựng đất nước giàu mạnh và xã hội công bằng."
   }
 ];
 
