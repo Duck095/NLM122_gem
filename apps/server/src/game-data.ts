@@ -41,7 +41,7 @@ export const QUESTIONS: QuestionDefinition[] = [
               "Đại hội VI (1986) ", 
               "Đại hội VII (1991) ", 
               "Đại hội VIII (1996)"],
-    correctIndex: 2,
+    correctIndex: 1,
     explanation: "Vì Đại hội VI năm 1986 mở đầu đường lối Đổi mới ở Việt Nam."
   },
   {
@@ -51,7 +51,7 @@ export const QUESTIONS: QuestionDefinition[] = [
               "Công nghiệp số và trí tuệ nhân tạo", 
               "Nông nghiệp, tiêu dùng, xuất khẩu", 
               "Dịch vụ tài chính và du lịch"],
-    correctIndex: 3,
+    correctIndex: 2,
     explanation: "Vì giai đoạn đầu Đổi mới ưu tiên nông nghiệp, hàng tiêu dùng và xuất khẩu."
   },
   {
@@ -61,7 +61,7 @@ export const QUESTIONS: QuestionDefinition[] = [
               "Luật Doanh nghiệp tư nhân", 
               "Luật Thương mại quốc tế", 
               "Luật Đất đai sửa đổi"],
-    correctIndex: 1,
+    correctIndex: 0,
     explanation: "Vì Luật Đầu tư nước ngoài năm 1987 giúp thu hút vốn và công nghệ từ nước ngoài."
   },
   {
@@ -73,7 +73,7 @@ export const QUESTIONS: QuestionDefinition[] = [
       "Xây dựng xong các đập thủy lợi",
       "Từ thiếu đói sang xuất khẩu gạo"
     ],
-    correctIndex: 4,
+    correctIndex: 3,
     explanation: "Vì Việt Nam đã từ thiếu lương thực trở thành nước xuất khẩu gạo."
   },
   {
@@ -85,7 +85,7 @@ export const QUESTIONS: QuestionDefinition[] = [
       "Phát triển mạnh kinh tế tri thức",
       "Chuyển đổi số nền kinh tế xanh"
     ],
-    correctIndex: 2,
+    correctIndex: 1,
     explanation: "Vì Đại hội VIII xác định nhiệm vụ đẩy mạnh công nghiệp hóa, hiện đại hóa."
   },
   {
@@ -97,7 +97,7 @@ export const QUESTIONS: QuestionDefinition[] = [
       "2007",
       "2011"
     ],
-    correctIndex: 3,
+    correctIndex: 2,
     explanation: "Vì Việt Nam chính thức gia nhập WTO vào năm 2007."
   },
   {
@@ -109,7 +109,7 @@ export const QUESTIONS: QuestionDefinition[] = [
       "Chỉ tập trung vào ngành nông nghiệp",
       "Chủ yếu là gia công và lắp ráp"
     ],
-    correctIndex: 4,
+    correctIndex: 3,
     explanation: "Vì công nghiệp Việt Nam còn phụ thuộc nhiều vào gia công và lắp ráp."
   },
   {
@@ -121,7 +121,7 @@ export const QUESTIONS: QuestionDefinition[] = [
       "Vốn đầu tư của ngân sách nhà nước",
       "Khai thác và xuất khẩu khoáng sản"
     ],
-    correctIndex: 2,
+    correctIndex: 1,
     explanation: "Vì Việt Nam chuyển sang phát triển dựa nhiều hơn vào khoa học và đổi mới sáng tạo."
   },
   {
@@ -133,7 +133,7 @@ export const QUESTIONS: QuestionDefinition[] = [
       "AI, Internet vạn vật, Dữ liệu lớn",
       "Kỹ thuật luyện kim và in ấn cũ"
     ],
-    correctIndex: 3,
+    correctIndex: 2,
     explanation: "Vì AI, Internet vạn vật và Dữ liệu lớn là công nghệ tiêu biểu của cách mạng 4.0."
   },
   {
@@ -145,7 +145,7 @@ export const QUESTIONS: QuestionDefinition[] = [
       "Hiệp định SEV và SEATO",
       "Hiệp định CPTPP và EVFTA"
     ],
-    correctIndex: 4,
+    correctIndex: 3,
     explanation: "Vì CPTPP và EVFTA là các hiệp định thương mại tự do thế hệ mới."
   },
   {
@@ -157,7 +157,7 @@ export const QUESTIONS: QuestionDefinition[] = [
       "Lao động không muốn làm công nghệ",
       "Tỷ lệ lao động biết chữ còn quá thấp"
     ],
-    correctIndex: 2,
+    correctIndex: 1,
     explanation: "Vì tự động hóa có thể thay thế lao động có kỹ năng thấp."
   },
   {
@@ -169,7 +169,7 @@ export const QUESTIONS: QuestionDefinition[] = [
       "Công nghệ AI và Robot",
       "Nguồn nhân lực chất lượng cao"
     ],
-    correctIndex: 1,
+    correctIndex: 0,
     explanation: "Vì công nghiệp hóa truyền thống chủ yếu dựa vào vốn, tài nguyên và lao động rẻ."
   },
   {
@@ -181,7 +181,7 @@ export const QUESTIONS: QuestionDefinition[] = [
       "Không thể xác định được thời gian",
       "Có thể rút ngắn nhờ công nghệ"
     ],
-    correctIndex: 4,
+    correctIndex: 3,
     explanation: "Vì công nghệ hiện đại giúp rút ngắn quá trình công nghiệp hóa."
   },
   {
@@ -193,7 +193,7 @@ export const QUESTIONS: QuestionDefinition[] = [
       "Gắn với kinh tế xanh và tuần hoàn",
       "Chỉ tập trung vào công nghiệp nặng"
     ],
-    correctIndex: 3,
+    correctIndex: 2,
     explanation: "Vì công nghiệp hóa hiện nay phải gắn với bảo vệ môi trường và phát triển bền vững."
   },
   {
@@ -205,7 +205,7 @@ export const QUESTIONS: QuestionDefinition[] = [
       "Độc quyền sản xuất công nghệ ",
       "Xóa bỏ hoàn toàn ngành nông nghiệp"
     ],
-    correctIndex: 3,
+    correctIndex: 1,
     explanation: "Vì công nghiệp hóa – hiện đại hóa không chỉ nhằm tăng trưởng kinh tế mà còn hướng tới nâng cao đời sống nhân dân, xây dựng đất nước giàu mạnh và xã hội công bằng."
   }
 ];
