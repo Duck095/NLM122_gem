@@ -186,7 +186,7 @@ export class RoomStore {
         }
       ],
       color: input.color,
-      capital: 0,
+      capital: 500,
       indicators: { ...INITIAL_INDICATORS },
       cards: [],
       projects: [],
